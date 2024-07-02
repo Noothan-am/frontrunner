@@ -42,6 +42,7 @@ app.post("/upload", upload.array("files"), async (req, res) => {
       const sheetNames = workbook.SheetNames;
       data.push(xlsx.utils.sheet_to_json(workbook.Sheets[sheetNames[0]]));
     });
+    console.log({ data });
     res.status(200).json({ data });
   } else {
     res.status(400).send("Please upload exactly 3 files.");
