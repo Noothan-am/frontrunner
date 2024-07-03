@@ -1,4 +1,3 @@
-import React from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
@@ -7,7 +6,7 @@ import Home from "./pages/Home";
 // import Chart from "./components/Chart";
 import Report from "./pages/Report";
 
-function App() {
+const App = () => {
   return (
     <>
       <Navbar />
@@ -18,6 +17,6 @@ function App() {
       {/* <Chart /> */}
     </>
   );
-}
+};
 
 export default App;

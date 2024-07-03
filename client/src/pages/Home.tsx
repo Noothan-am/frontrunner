@@ -1,7 +1,53 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import UploadFile from "../components/UploadFile";
 
 function Home() {
+  const [uploadedFiles, setUploadedFiles] = useState<any>({
+    revenueData: null,
+    salesData: null,
+    taxData: null,
+  });
+
+  const handleExcelUpload = (event, dataType) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      setUploadedFiles([...uploadedFiles, file]);
+    }
+  };
+
+  const handleExcelUploadSubmit = async () => {
+    try {
+      const formData = new FormData();
+      console.log("uploadedFiles", uploadedFiles);
+
+      for (const key in uploadedFiles) {
+        console.log("hello");
+
+        if (uploadedFiles[key]) {
+          console.log("key", key);
+          console.log("upload", uploadedFiles[key]);
+
+          formData.append(key, uploadedFiles[key]);
+        }
+      }
+
+      const response = await fetch("http://localhost:3000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+      console.log("Data successfully uploaded:", result);
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
+
   return (
     <>
       <div className="hero-heading w-90 mx-auto mt-16">
@@ -15,11 +61,22 @@ function Home() {
           Founders and investors can upload all their business data here.
         </p>
         <div>
-          <UploadFile />
+          <UploadFile
+            handleExcelUpload={handleExcelUpload}
+            title={"Revenue Data"}
+          />
+          <UploadFile
+            handleExcelUpload={handleExcelUpload}
+            title={"Sales Data"}
+          />
+          <UploadFile
+            handleExcelUpload={handleExcelUpload}
+            title={"Tax Data"}
+          />
         </div>
         <div className="flex justify-center mt-16 mb-7">
           <button
-            onClick={() => {}}
+            onClick={handleExcelUploadSubmit}
             className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
           >
             Submit Data

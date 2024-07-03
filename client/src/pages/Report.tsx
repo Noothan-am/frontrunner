@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Chart from "../components/Chart";
 
+interface ReportData {
+  [key: string]: any;
+}
+
+interface ReportResult {
+  [key: string]: any;
+}
+
 function Report() {
-  const createReport = async (data) => {
+  const createReport = async (
+    data: ReportData
+  ): Promise<ReportResult | void> => {
     try {
       const response = await fetch("/create-report", {
         method: "POST",
@@ -16,20 +26,22 @@ function Report() {
         throw new Error("Network response was not ok");
       }
 
-      const result = await response.json();
+      const result: ReportResult = await response.json();
       return result;
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     }
   };
-  React.useEffect(() => {
+
+  useEffect(() => {
     const fetchData = async () => {
-      const result = await createReport();
+      const result = await createReport({});
       console.log(result);
     };
 
     fetchData();
   }, []);
+
   return (
     <div>
       <Chart />
