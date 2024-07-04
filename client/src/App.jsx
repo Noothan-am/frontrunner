@@ -3,8 +3,9 @@ import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-// import Chart from "./components/Chart";
 import Report from "./pages/Report";
+import SendData from "./pages/SendData";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
@@ -13,8 +14,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/report" element={<Report />} />
+        <Route path="/send-data" element={<SendData />} />
       </Routes>
-      {/* <Chart /> */}
+      <Footer />
     </>
   );
 };
