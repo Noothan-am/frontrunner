@@ -11,7 +11,7 @@ function UploadFile({ title, handleExcelUpload }) {
         id="default_size"
         type="file"
         onChange={handleExcelUpload}
-        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, .xlsx"
       />
     </div>
   );

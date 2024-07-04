@@ -1,48 +1,36 @@
 import React, { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UploadFile from "../components/UploadFile";
 
 function Home() {
-  const [uploadedFiles, setUploadedFiles] = useState<any>({
-    revenueData: null,
-    salesData: null,
-    taxData: null,
-  });
+  const [uploadedFiles, setUploadedFiles] = useState<any>([]);
+  const navigate = useNavigate();
 
   const handleExcelUpload = (event, dataType) => {
     const file = event.target.files[0];
 
     if (file) {
-      setUploadedFiles([...uploadedFiles, file]);
+      setUploadedFiles((availableFiles) => [...availableFiles, file]);
     }
   };
 
   const handleExcelUploadSubmit = async () => {
     try {
       const formData = new FormData();
-      console.log("uploadedFiles", uploadedFiles);
-
-      for (const key in uploadedFiles) {
-        console.log("hello");
-
-        if (uploadedFiles[key]) {
-          console.log("key", key);
-          console.log("upload", uploadedFiles[key]);
-
-          formData.append(key, uploadedFiles[key]);
-        }
-      }
-
+      uploadedFiles.forEach((file, _index) => {
+        formData.append("files", file);
+      });
       const response = await fetch("http://localhost:3000/upload", {
         method: "POST",
         body: formData,
       });
-
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
 
       const result = await response.json();
       console.log("Data successfully uploaded:", result);
+      navigate("/report");
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     }
@@ -81,6 +69,14 @@ function Home() {
           >
             Submit Data
           </button>
+        </div>
+        <div className="flex items-center mb-4">
+          <input
+            id="default-checkbox"
+            type="checkbox"
+            value=""
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          />
         </div>
       </div>
     </>
