@@ -46,7 +46,6 @@ function Report() {
   return (
     <div>
       <Chart />
-      <Divider>Divider</Divider>
     </div>
   );
 }
