@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { Chart } from "../components/Chart";
 import { Divider } from "@tremor/react";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 
 interface ReportData {
   [key: string]: any;
@@ -45,7 +47,9 @@ function Report() {
 
   return (
     <div>
+      <Navbar />
       <Chart />
+      <Footer />
     </div>
   );
 }

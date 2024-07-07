@@ -2,9 +2,13 @@ import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UploadFile from "../components/UploadFile";
 import { useExcelData } from "../context/ExcelContext";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 function Home() {
   const [uploadedFiles, setUploadedFiles] = useState<any>([]);
+  const [date, setDate] = useState<any>([]);
+
   const navigate = useNavigate();
   const { setAllExcelUsersData }: any = useExcelData();
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -15,9 +19,32 @@ function Home() {
     }
   };
 
+  const handleDateChange = (event) => {
+    const selectedDate = event.target.value;
+    const monthNumber = parseInt(selectedDate.split("-")[1], 10);
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const monthName = months[monthNumber - 1];
+    setDate(monthName);
+  };
+
   const handleExcelUploadSubmit = async () => {
     try {
       const formData = new FormData();
+      formData.append("month", date);
+      formData.append("user_id", "1");
       uploadedFiles.forEach((file, _index) => {
         formData.append("files", file);
       });
@@ -41,6 +68,7 @@ function Home() {
 
   return (
     <>
+      <Navbar />
       <div className="hero-heading w-90 mx-auto mt-16">
         <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl text-center">
           CMS For{" "}
@@ -64,7 +92,20 @@ function Home() {
             handleExcelUpload={handleExcelUpload}
             title={"Tax Data"}
           />
+
+          <div className="w-1/2 mx-auto mt-10">
+            <label className="block mb-2 ml-2 text-sm font-large text-gray-900 dark:text-white">
+              Month
+            </label>
+            <input
+              onChange={handleDateChange}
+              className="focus:shadow-soft-primary-outline leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder-gray-500 focus:border-fuchsia-300 focus:outline-none text-cyan-50"
+              placeholder="Please select a month and year"
+              type="month"
+            />
+          </div>
         </div>
+
         <div className="flex justify-center mt-16 mb-7">
           <button
             type="button"
@@ -75,6 +116,7 @@ function Home() {
           </button>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const SelectData = ({ handleDataSelect, selectedData }) => {
   const onclickhandle = () => {
@@ -96,60 +98,65 @@ function SendData() {
   };
 
   return (
-    <div className="container w-100 mx-auto">
-      <h1 className=" my-5 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-        Send Your{" "}
-        <span className="underline underline-offset-3 decoration-8 decoration-blue-400 dark:decoration-blue-600">
-          Message
-        </span>
-      </h1>
-      <p className="text-lg font-normal my-10 text-gray-500 lg:text-xl dark:text-gray-400">
-        Select the data you wish to send to our founder. Choose from a range of
-        options to share valuable insights and information directly with our
-        team.
-      </p>
-      <form className="w-2/3 mx-auto">
-        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          Your Email
-        </label>
-        <div className="relative mb-2">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <svg
-              className="w-4 h-4 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 20 16"
-            >
-              <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z" />
-              <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z" />
-            </svg>
-          </div>
-          <input
-            type="text"
-            id="email-address-icon"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="name@flowbite.com"
-          />
-        </div>
+    <>
+      <Navbar />
 
-        <form className=" mx-auto">
+      <div className="container w-100 mx-auto">
+        <h1 className=" my-5 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+          Send Your{" "}
+          <span className="underline underline-offset-3 decoration-8 decoration-blue-400 dark:decoration-blue-600">
+            Message
+          </span>
+        </h1>
+        <p className="text-lg font-normal my-10 text-gray-500 lg:text-xl dark:text-gray-400">
+          Select the data you wish to send to our founder. Choose from a range
+          of options to share valuable insights and information directly with
+          our team.
+        </p>
+        <form className="w-2/3 mx-auto">
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Your message
+            Your Email
           </label>
-          <textarea
-            id="message"
-            rows={4}
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Leave a comment..."
-          ></textarea>
+          <div className="relative mb-2">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+              <svg
+                className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 16"
+              >
+                <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z" />
+                <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              id="email-address-icon"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="name@flowbite.com"
+            />
+          </div>
+
+          <form className=" mx-auto">
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              Your message
+            </label>
+            <textarea
+              id="message"
+              rows={4}
+              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Leave a comment..."
+            ></textarea>
+          </form>
+          <SelectData
+            selectedData={selectedData}
+            handleDataSelect={handleDataSelect}
+          />
         </form>
-        <SelectData
-          selectedData={selectedData}
-          handleDataSelect={handleDataSelect}
-        />
-      </form>
-    </div>
+      </div>
+      <Footer />
+    </>
   );
 }
 
