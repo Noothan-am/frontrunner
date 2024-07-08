@@ -13,6 +13,8 @@ const RegisterForm = ({
   setCompanyName,
   companyId,
   setCompanyId,
+  category,
+  setCategory,
   handleSignUp,
 }) => {
   return (
@@ -28,102 +30,194 @@ const RegisterForm = ({
               src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
               alt="logo"
             />
-            Flowbite
+            Frontrunner
           </a>
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Create an account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Founders Name
-                  </label>
-                  <input
-                    type="text"
-                    name="foundersName"
-                    id="foundersName"
-                    value={foundersName}
-                    onChange={(e) => setFoundersName(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Founders Name"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Your Email
-                  </label>
-                  <input
-                    type="email"
-                    name="yourEmail"
-                    id="yourEmail"
-                    value={yourEmail}
-                    onChange={(e) => setYourEmail(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="name@company.com"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Company Name
-                  </label>
-                  <input
-                    type="text"
-                    name="companyName"
-                    id="companyName"
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="Company Name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Company Id
-                  </label>
-                  <input
-                    type="text"
-                    name="companyId"
-                    id="companyId"
-                    value={companyId}
-                    onChange={(e) => setCompanyId(e.target.value)}
-                    placeholder="Company Id"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
-                </div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Select an option
+              </label>
+              <select
+                id="countries"
+                className="bg-gray-50 border cursor-pointer border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option selected>Choose an option</option>
+                <option value="Founder">Founder</option>
+                <option value="Investor">Investor</option>
+              </select>
+              {category === "Founder" || category == "Choose an option" ? (
+                <form className="space-y-4 md:space-y-6" action="#">
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Founders Name
+                    </label>
+                    <input
+                      type="text"
+                      name="foundersName"
+                      id="foundersName"
+                      value={foundersName}
+                      onChange={(e) => setFoundersName(e.target.value)}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Founders Name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Your Email
+                    </label>
+                    <input
+                      type="email"
+                      name="yourEmail"
+                      id="yourEmail"
+                      value={yourEmail}
+                      onChange={(e) => setYourEmail(e.target.value)}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="name@company.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Company Name
+                    </label>
+                    <input
+                      type="text"
+                      name="companyName"
+                      id="companyName"
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder="Company Name"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Company Id
+                    </label>
+                    <input
+                      type="text"
+                      name="companyId"
+                      id="companyId"
+                      value={companyId}
+                      onChange={(e) => setCompanyId(e.target.value)}
+                      placeholder="Company Id"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                  </div>
 
-                <button
-                  type="button"
-                  onClick={handleSignUp}
-                  className="text-white w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                >
-                  Create an account
-                </button>
-                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Already have an account?{" "}
                   <button
-                    onClick={handleSignUpClick}
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    type="button"
+                    onClick={handleSignUp}
+                    className="text-white w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                   >
-                    Login here
+                    Create an account
                   </button>
-                </p>
-              </form>
+                  <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                    Already have an account?{" "}
+                    <button
+                      onClick={handleSignUpClick}
+                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    >
+                      Login here
+                    </button>
+                  </p>
+                </form>
+              ) : (
+                <>
+                  <form className="space-y-4 md:space-y-6" action="#">
+                    <div>
+                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Investor Name
+                      </label>
+                      <input
+                        type="text"
+                        name="foundersName"
+                        id="foundersName"
+                        value={foundersName}
+                        onChange={(e) => setFoundersName(e.target.value)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Founders Name"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Your Email
+                      </label>
+                      <input
+                        type="email"
+                        name="yourEmail"
+                        id="yourEmail"
+                        value={yourEmail}
+                        onChange={(e) => setYourEmail(e.target.value)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="name@company.com"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Investor Id
+                      </label>
+                      <input
+                        type="text"
+                        name="companyId"
+                        id="companyId"
+                        value={companyId}
+                        onChange={(e) => setCompanyId(e.target.value)}
+                        placeholder="Company Id"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleSignUp}
+                      className="text-white w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                    >
+                      Create an account
+                    </button>
+                    <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                      Already have an account?{" "}
+                      <button
+                        onClick={handleSignUpClick}
+                        className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                      >
+                        Login here
+                      </button>
+                    </p>
+                  </form>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -139,6 +233,7 @@ const LoginForm = ({
   email,
   setEmail,
   handleLogin,
+  setCategory,
 }) => {
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -160,6 +255,20 @@ const LoginForm = ({
               Sign in to your account
             </h1>
             <form className="space-y-4 md:space-y-6" action="#">
+              <div>
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Select an option
+                </label>
+                <select
+                  id="countries"
+                  className="bg-gray-50 border cursor-pointer border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option selected>Choose an option</option>
+                  <option value="Founder">Founder</option>
+                  <option value="Investor">Investor</option>
+                </select>
+              </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Your email
@@ -218,7 +327,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [login, setLogin] = useState(true);
   const [foundersName, setFoundersName] = useState("");
-  const [foundersEmail, setFoundersEmail] = useState("");
+  const [category, setCategory] = useState("Choose an option");
   const [yourEmail, setYourEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companyId, setCompanyId] = useState("");
@@ -228,6 +337,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    if (!email || !password || category === "Choose an option") {
+      return alert("Please fill all the fields");
+    }
     try {
       const response = await fetch(`${apiUrl}/login`, {
         method: "POST",
@@ -237,12 +349,14 @@ const Login = () => {
         body: JSON.stringify({
           email,
           password,
+          category,
         }),
       });
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
-        localStorage.setItem("userDetail", JSON.stringify(result));
+        category === "Investor"
+          ? localStorage.setItem("Investor", JSON.stringify(result))
+          : localStorage.setItem("founder", JSON.stringify(result));
         navigate("/dashboard");
       } else {
         console.error("Login failed");
@@ -256,7 +370,7 @@ const Login = () => {
     setLogin(!login);
   };
 
-  const handleSignUp = async () => {
+  const founderSignup = async () => {
     try {
       const response = await fetch(`${apiUrl}/add-founder`, {
         method: "POST",
@@ -284,10 +398,49 @@ const Login = () => {
     }
   };
 
+  const investorSignup = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/add-investor`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: foundersName,
+          id: companyId,
+          email: yourEmail,
+          password,
+        }),
+      });
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        localStorage.setItem("userDetail", JSON.stringify(result));
+        navigate("/dashboard");
+      } else {
+        console.error("Sign up failed");
+      }
+    } catch (error) {
+      console.error("An error occurred during sign up:", error);
+    }
+  };
+
+  const handleSignUp = () => {
+    if (category === "Choose an option") {
+      return alert("Please fill all the fields");
+    }
+    if (category === "Founder") {
+      founderSignup();
+    } else {
+      investorSignup();
+    }
+  };
+
   return (
     <>
       {login ? (
         <LoginForm
+          setCategory={setCategory}
           handleSignUpClick={handleSignUpClick}
           password={password}
           setPassword={setPassword}
@@ -307,6 +460,8 @@ const Login = () => {
           companyName={companyName}
           setCompanyName={setCompanyName}
           companyId={companyId}
+          category={category}
+          setCategory={setCategory}
           setCompanyId={setCompanyId}
           handleSignUp={handleSignUp}
         />

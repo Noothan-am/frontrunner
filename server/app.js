@@ -86,11 +86,13 @@ app.post("/add-founder", async (req, res) => {
 });
 
 app.post("/add-investor", async (req, res) => {
-  const { name, id, email, password, companies } = req.body;
+  const { name, id, email, password } = req.body;
 
-  if (!name || !id || !email || !password || !companies) {
+  if (!name || !id || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
+
+  console.log(req.body);
 
   try {
     const newUser = new InvestorSchema({
@@ -98,7 +100,12 @@ app.post("/add-investor", async (req, res) => {
       id,
       email,
       password,
-      companies,
+      companies: {
+        comp_id: "F_1",
+        comp_name: "frontrunner",
+        founder_id: "23",
+        founder_name: "Sid",
+      },
     });
 
     await newUser.save();
@@ -130,21 +137,21 @@ app.post("/add-investor", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    console.log(email, password);
-    if (!email || !password) {
+    const { email, password, category } = req.body;
+    console.log(email, password, category);
+    if (!email || !password || category === "Choose an option") {
       return res.status(400).json({ message: "All fields are required" });
     }
-    const user = await FounderSchema.findOne(
-      { email, password },
-      { password: 0 }
-    );
+
+    let user;
+    if (category === "Founder") {
+      user = await FounderSchema.findOne({ email, password }, { password: 0 });
+    } else {
+      user = await InvestorSchema.findOne({ email, password }, { password: 0 });
+    }
     if (!user) {
       return res.status(404).json({ message: "user not found" });
     }
-    // if (!(password === user.password)) {
-    //   return res.status(401).json({ message: "invalid credentials" });
-    // }
     return res.status(200).send(user);
   } catch (error) {
     return res.status(500).json({ message: error });
