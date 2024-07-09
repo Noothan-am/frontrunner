@@ -6,7 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
 const dir = "./uploads";
-const sendMail = require("./utils/mail.ts");
+const sendMail = require("./utils/mail.js");
 require("./connections/database-connections.js");
 
 const FounderSchema = require("./Schemas/FounderSchema.js");
@@ -40,6 +40,8 @@ if (!fs.existsSync(dir)) {
 }
 
 app.post("/upload", upload.array("files"), async (req, res) => {
+  const { month, id } = req.body;
+  const allFiles = [];
   if (req.files) {
     const data = [];
     req.files.forEach((file, index) => {
@@ -47,9 +49,48 @@ app.post("/upload", upload.array("files"), async (req, res) => {
       const workbook = xlsx.readFile(filePath);
       const sheetNames = workbook.SheetNames;
       data.push(xlsx.utils.sheet_to_json(workbook.Sheets[sheetNames[0]]));
+      allFiles.push(file);
     });
-    console.log({ data });
-    res.status(200).json({ data });
+    const finalData = {
+      [month]: {
+        Revenue: {
+          name: allFiles[0].filename,
+          data: fs.readFileSync(allFiles[0].path),
+          contentType: allFiles[0].mimetype,
+        },
+        Sales: {
+          name: allFiles[1].filename,
+          data: fs.readFileSync(allFiles[1].path),
+          contentType: allFiles[1].mimetype,
+        },
+        Profit: {
+          name: allFiles[2].filename,
+          data: fs.readFileSync(allFiles[2].path),
+          contentType: allFiles[2].mimetype,
+        },
+      },
+    };
+
+    try {
+      const user = await FounderSchema.findOne({ founder_id: "23" });
+      if (user) {
+        if (!user.data) {
+          user.data = {};
+        }
+        user.data = { ...user.data, ...finalData };
+        await user.save();
+        res.status(200).json({ data });
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    } finally {
+      allFiles.forEach((file) => {
+        fs.unlinkSync(file.path);
+      });
+    }
   } else {
     res.status(400).send("Please upload exactly 3 files.");
   }
@@ -165,24 +206,3 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-// const userData = {
-//   comp_id: "C12745",
-//   comp_name: "Tech Innovations Ltd.",
-//   founder_id: "F08765",
-//   founder_name: "Jane Doe",
-//   email: "noothan1",
-//   password: "noothan1",
-//   data: {
-//     june: {
-//       revenue: "revenue_june.pdf",
-//       sales: "sales_june.xlsx",
-//       profit: "profit_june.docx",
-//     },
-//     july: {
-//       revenue: "revenue_july.pdf",
-//       sales: "sales_july.xlsx",
-//       profit: "profit_july.docx",
-//     },
-//   },
-// };

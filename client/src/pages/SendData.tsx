@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-const SelectData = ({ handleDataSelect, selectedData }) => {
-  const onclickhandle = () => {
-    console.log(selectedData);
-  };
+const SelectData = ({ handleDataSelect, selectedData, sendDataToInvestor }) => {
   return (
     <>
       <div className="container mx-auto mt-3">
@@ -66,7 +63,7 @@ const SelectData = ({ handleDataSelect, selectedData }) => {
         <div className="flex justify-center mt-16 mb-7">
           <button
             type="button"
-            onClick={onclickhandle}
+            onClick={sendDataToInvestor}
             className="text-white bg-gradient-to-r mt-6 from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 "
           >
             Send Data
@@ -78,10 +75,11 @@ const SelectData = ({ handleDataSelect, selectedData }) => {
 };
 
 function SendData() {
-  const [data, setData] = useState({
+  const [data, setData] = useState<any>({
     email: "",
     message: "",
   });
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const [selectedData, setSelectedData] = useState({
     "Sales Data": false,
@@ -90,17 +88,43 @@ function SendData() {
   });
 
   const handleDataSelect = (data) => {
-    console.log("Selected data:", data);
     setSelectedData((prevData) => ({
       ...prevData,
       [data.type]: !prevData[data.type],
     }));
   };
 
+  const handlChange = (e) => {
+    console.log({ ...data, [e.target.id]: e.target.value });
+
+    setData({ ...data, [e.target.id]: e.target.value });
+  };
+
+  const sendDataToInvestor = async () => {
+    console.log(data.email);
+
+    const response = await fetch(`${apiUrl}/send`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userEmail: data.email,
+      }),
+    });
+
+    const responseData = await response.json();
+
+    if (responseData.ok) {
+      console.log(data.msg);
+    } else {
+      console.error("Failed to send message:", data.error);
+    }
+  };
+
   return (
     <>
       <Navbar />
-
       <div className="container w-100 mx-auto">
         <h1 className=" my-5 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
           Send Your{" "}
@@ -132,7 +156,8 @@ function SendData() {
             </div>
             <input
               type="text"
-              id="email-address-icon"
+              id="email"
+              onChange={(e) => handlChange(e)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="name@flowbite.com"
             />
@@ -143,6 +168,7 @@ function SendData() {
               Your message
             </label>
             <textarea
+              onChange={(e) => handlChange(e)}
               id="message"
               rows={4}
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -152,6 +178,7 @@ function SendData() {
           <SelectData
             selectedData={selectedData}
             handleDataSelect={handleDataSelect}
+            sendDataToInvestor={sendDataToInvestor}
           />
         </form>
       </div>
