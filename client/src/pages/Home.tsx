@@ -9,7 +9,6 @@ function Home() {
   const { setAllExcelUsersData }: any = useExcelData();
   const handleExcelUpload = (event, dataType) => {
     const file = event.target.files[0];
-
     if (file) {
       setUploadedFiles((availableFiles) => [...availableFiles, file]);
     }
@@ -21,7 +20,7 @@ function Home() {
       uploadedFiles.forEach((file, _index) => {
         formData.append("files", file);
       });
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/upload`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
         method: "POST",
         body: formData,
       });
