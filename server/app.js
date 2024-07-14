@@ -51,22 +51,20 @@ app.post("/upload", upload.array("files"), async (req, res) => {
       data.push(xlsx.utils.sheet_to_json(workbook.Sheets[sheetNames[0]]));
       allFiles.push(file);
     });
+    console.log(data);
     const finalData = {
       [month]: {
         Revenue: {
           name: allFiles[0].filename,
-          data: fs.readFileSync(allFiles[0].path),
-          contentType: allFiles[0].mimetype,
+          data: data[0],
         },
         Sales: {
           name: allFiles[1].filename,
-          data: fs.readFileSync(allFiles[1].path),
-          contentType: allFiles[1].mimetype,
+          data: data[1],
         },
         Profit: {
           name: allFiles[2].filename,
-          data: fs.readFileSync(allFiles[2].path),
-          contentType: allFiles[2].mimetype,
+          data: data[1],
         },
       },
     };
@@ -88,7 +86,9 @@ app.post("/upload", upload.array("files"), async (req, res) => {
       res.status(500).json({ message: "Internal Server Error" });
     } finally {
       allFiles.forEach((file) => {
-        fs.unlinkSync(file.path);
+        if (fs.existsSync(file.path)) {
+          fs.unlinkSync(file.path);
+        }
       });
     }
   } else {

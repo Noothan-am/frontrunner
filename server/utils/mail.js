@@ -1,6 +1,22 @@
 const nodemailer = require("nodemailer");
 const Mailgen = require("mailgen");
 const FounderSchema = require("../Schemas/FounderSchema.js");
+const path = require("path");
+const fs = require("fs");
+const ExcelJS = require("exceljs");
+
+async function jsonToExcel(category, data, outputPath) {
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Sheet1");
+
+  const columns = Object.keys(data[0]).map((key) => ({ header: key, key }));
+  worksheet.columns = columns;
+
+  data.forEach((item) => worksheet.addRow(item));
+
+  await workbook.xlsx.writeFile(outputPath);
+  console.log(`Excel file for ${category} created at ${outputPath}`);
+}
 
 const sendMail = async (req, res) => {
   const { userEmail } = req.body;
@@ -18,18 +34,26 @@ const sendMail = async (req, res) => {
     };
 
     const id = "23";
-    const user = await FounderSchema.findOne({ founder_id: id });
-    if (!user) {
+    const mongoDBData = await FounderSchema.findOne({ founder_id: id });
+    if (!mongoDBData) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    let attachments = [];
-    for (const key in user.data) {
-      for (const data in user.data[key]) {
+    const attachments = [];
+    const filePaths = []; // Store file paths to delete later
+    for (const [month, categories] of Object.entries(mongoDBData.data)) {
+      for (const [category, { data }] of Object.entries(categories)) {
+        const outputPath = path.join(
+          __dirname,
+          "../sending",
+          `${category}-${month}-${mongoDBData.comp_name}.xlsx`
+        );
+        await jsonToExcel(category, data, outputPath); // Ensure the file is created before adding to attachments
         attachments.push({
-          filename: user.data[key][data].name,
-          path: user.data[key][data].path,
+          filename: `${category}-${month}-${mongoDBData.comp_name}.xlsx`,
+          path: outputPath,
         });
+        filePaths.push(outputPath); // Add file path to the list for later deletion
       }
     }
 
@@ -45,13 +69,13 @@ const sendMail = async (req, res) => {
     const userMessage = {
       body: {
         name: "Noothan",
-        intro: "this is a sample test message",
+        intro: "This is a sample test message",
         outro:
           "Need help, or have questions? Just ask your query to this mail ink@become.team, sam@become.team",
       },
     };
 
-    const userMail = await MailGenerator.generate(userMessage);
+    const userMail = MailGenerator.generate(userMessage);
     const userMailOptions = {
       from: process.env.FROM_ADMIN_MAIL,
       to: userEmail,
@@ -62,13 +86,27 @@ const sendMail = async (req, res) => {
 
     transport
       .sendMail(userMailOptions)
-      .then(async (response) => {
+      .then(() => {
+        // Delete files after sending email
+        filePaths.forEach((filePath) => {
+          fs.unlink(filePath, (err) => {
+            if (err) {
+              console.error(
+                `Failed to delete file ${filePath}: ${err.message}`
+              );
+            } else {
+              console.log(`Deleted file ${filePath}`);
+            }
+          });
+        });
+
         return res.status(200).send({
           msg: "Messages sent successfully",
         });
       })
       .catch((err) => {
         console.log(err);
+        res.status(500).json({ error: err.message });
       });
   } catch (error) {
     res.status(500).json({ error: error.message });
