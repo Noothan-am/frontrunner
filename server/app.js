@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
 const xlsx = require("xlsx");
@@ -5,6 +6,8 @@ const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
 const dir = "./uploads";
+const sendMail = require("./utils/mail.ts");
+require("./connections/database-connections.js");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -47,6 +50,12 @@ app.post("/upload", upload.array("files"), async (req, res) => {
   } else {
     res.status(400).send("Please upload exactly 3 files.");
   }
+});
+
+app.post("/send", sendMail);
+
+app.post("/add-user", (req, res) => {
+  return res.status(200).json({ message: "User added successfully" });
 });
 
 app.get("/", (req, res) => {

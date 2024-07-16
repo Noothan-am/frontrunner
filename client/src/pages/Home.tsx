@@ -7,6 +7,7 @@ function Home() {
   const [uploadedFiles, setUploadedFiles] = useState<any>([]);
   const navigate = useNavigate();
   const { setAllExcelUsersData }: any = useExcelData();
+  const apiUrl = import.meta.env.VITE_API_URL;
   const handleExcelUpload = (event, dataType) => {
     const file = event.target.files[0];
     if (file) {
@@ -20,7 +21,7 @@ function Home() {
       uploadedFiles.forEach((file, _index) => {
         formData.append("files", file);
       });
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
+      const response = await fetch(`${apiUrl}/upload`, {
         method: "POST",
         body: formData,
       });
